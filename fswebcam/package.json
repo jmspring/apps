@@ -1,0 +1,10 @@
+{
+  "name": "fswebcam-app",
+  "version": "0.1.3",
+  "main": "./app",
+  "dependencies": {
+    "nitrogen-camera": "~0.1.12",
+    "nitrogen-imagesnap": "~0.1.15"
+  },
+  "devDependencies": {}
+}
