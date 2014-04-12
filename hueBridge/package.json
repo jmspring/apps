@@ -1,0 +1,16 @@
+{
+  "name": "hue-bridge",
+  "homepage": "https://github.com/timfpark/hueBridge",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timfpark/hueBridge"
+  },
+  "version": "0.1.5",
+  "main": "./app",
+  "dependencies": {
+    "node-hue-api": "~0.2.2",
+    "nitrogen": "~0.1.233",
+    "nitrogen-light": "~0.1.12",
+    "nitrogen-philips-hue": "~0.1.12"
+  }
+}
