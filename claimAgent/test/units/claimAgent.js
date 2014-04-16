@@ -14,6 +14,16 @@ describe('claim agent app', function() {
             var claimAgent = new ClaimAgent(session, {});
 
             claimAgent.start();
+
+	    var message = new nitrogen.Message({
+                type: 'claim',
+                body: {
+                    claim_code: "XXXX-1111"
+                }
+            });
+
+            claimAgent.process(message);
+
             done();
         });
     });
