@@ -1,10 +1,6 @@
 var nitrogen = require('nitrogen')
   , SunCalc = require('suncalc');
 
-var session;
-var params;
-var checkInterval;
-
 var START_DEGREES = 3.0;
 var FINISH_DEGREES = -3.0;
 var DEGREES_PER_SHOT = 0.5;
@@ -21,7 +17,7 @@ function SunsetApp(session, params) {
 SunsetApp.prototype.fetchCurrentShots = function(callback) {
     currentShots = {};
 
-    nitrogen.Message.find(session, { type: 'cameraCommand', to: this.params.camera_id }, {}, function(err, commands) {
+    nitrogen.Message.find(this.session, { type: 'cameraCommand', to: this.params.camera_id }, {}, function(err, commands) {
         if (err) return callback(err);
 
         commands.forEach(function(cameraCommand) {
@@ -45,7 +41,7 @@ SunsetApp.prototype.checkShot = function(shotTime, shotTag) {
         var expireTime = new Date(shotTime.getTime() + 15 * 60 * 1000);
 
         var cmd = new nitrogen.Message({
-              to: params.camera_id,
+              to: this.params.camera_id,
               type: 'cameraCommand',
               ts: shotTime,
               expires: expireTime,
@@ -57,10 +53,10 @@ SunsetApp.prototype.checkShot = function(shotTime, shotTag) {
               }
         });
 
-        session.log.info('adding sunset shot at: ' + cmd.ts.toString());
-        cmd.send(session);
+        this.session.log.info('adding sunset shot at: ' + cmd.ts.toString());
+        cmd.send(this.session);
     } else {
-        session.log.debug('already have sunset shot at: ' + shotTime.toString());
+        this.session.log.debug('already have sunset shot at: ' + shotTime.toString());
     }
 };
 
@@ -89,7 +85,7 @@ SunsetApp.prototype.checkShots = function() {
         if (err) return self.session.log.error('fetching current shots failed: ' + err);
 
         for (daysOut=0; daysOut <= 1; daysOut++) {
-            checkShotsDaysOut(daysOut);
+            self.checkShotsDaysOut(daysOut);
         }
     });
 };
@@ -99,7 +95,7 @@ SunsetApp.prototype.start = function() {
 
     ['camera_id', 'latitude', 'longitude'].forEach(function(key) {
         if (!self.params[key]) {
-            session.log.error('required parameter ' + key +' not supplied.');
+            self.session.log.error('required parameter ' + key +' not supplied.');
             return process.exit(0);
         }
     });
