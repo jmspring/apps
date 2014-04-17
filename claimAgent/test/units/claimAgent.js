@@ -15,7 +15,7 @@ describe('claim agent app', function() {
 
             claimAgent.start();
 
-	    var message = new nitrogen.Message({
+    	    var message = new nitrogen.Message({
                 type: 'claim',
                 body: {
                     claim_code: "XXXX-1111"
