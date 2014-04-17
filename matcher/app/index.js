@@ -108,11 +108,7 @@ Matcher.prototype.process = function(message) {
 
 Matcher.prototype.start = function() {
     var self = this;
-    this.session.on({
-        type: 'message',
-        name: 'matcher',
-        filter: { type: 'ip' }
-    }, function(message) {
+    this.session.onMessage({ type: 'ip' }, function(message) {
         self.process(message);
     });
 };
