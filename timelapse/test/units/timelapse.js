@@ -33,8 +33,6 @@ describe('timelapse app', function() {
             getMessageCount(session, camera, function(count) {
                 assert.notEqual(count, 0);
 
-		console.log('second run');
-
                 app.start();
 
                 getMessageCount(session, camera, function(newCount) {
