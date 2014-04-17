@@ -9,8 +9,6 @@ function Matcher(session, params) {
 Matcher.prototype.matchDevice = function(device, principal, callback) {
     var self = this;
 
-    this.session.log.info('matcher: device id: ' + device.id + ' has no admins, giving wildcard rights to principal: ' + principal.id);
-
     var permission = new nitrogen.Permission({
         authorized: true,
         issued_to: principal.id,
@@ -38,10 +36,18 @@ Matcher.prototype.matchDevice = function(device, principal, callback) {
 Matcher.prototype.matchIfNoAdmin = function(device, principal, callback) {
     var self = this;
 
-    nitrogen.Permission.find(this.session, { principal_for: device.id, action: 'admin' }, {}, function(err, permissions) {
+    nitrogen.Permission.find(this.session, { principal_for: device.id, issued_to: principal.id }, {}, function(err, permissions) {
 
-        // a principal can be an admin of itself and not matched.
-        if (permissions.length < 2 && (permissions.length === 0 || permissions[0].issued_to === device.id)) {
+        var foundAdmin = false;
+
+        permissions.forEach(function(permission) {
+            if (!permission.action || permission.action === "admin") {
+                foundAdmin = true;
+            }
+        });
+
+        if (!foundAdmin) {
+            this.session.log.info('matcher: device id: ' + device.id + ' has no admins, giving wildcard rights to principal: ' + principal.id);
             self.matchDevice(device, principal, callback);
         } else {
             self.session.log.info('matcher: device id: ' + device.id + ' already has admin(s): not matching.');
