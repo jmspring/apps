@@ -44,11 +44,7 @@ ClaimAgent.prototype.process = function(message) {
 
 ClaimAgent.prototype.start = function() {
     var self = this;
-    this.session.on({
-        type: 'message',
-        name: 'claimAgent',
-        filter: { type: 'claim' }
-    }, function(claimMessage) {
+    this.session.onMessage({ type: 'claim' }, function(claimMessage) {
         self.process(claimMessage);
     });
 };
