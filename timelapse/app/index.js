@@ -22,6 +22,7 @@ Timelapse.prototype.sendShot = function() {
 
     var shot = new nitrogen.Message({
        to: this.params.camera_id,
+       tags: [ nitrogen.CommandManager.commandTag(this.params.camera_id) ],
        type: 'cameraCommand',
        expires: new Date(now.getTime() + 0.5 * this.params.period * 1000),
        body: {
@@ -35,7 +36,7 @@ Timelapse.prototype.sendShot = function() {
     this.session.log.info('timelapse: sending shot: ' + JSON.stringify(shot));
 
     shot.send(this.session, function(err, shot) {
-        if (err) return this.session.log.info('timelapse: error sending shot: ' + err);
+        if (err) return self.session.log.info('timelapse: error sending shot: ' + JSON.strierr);
 
         self.session.log.info('timelapse: shot sent.');
     });
