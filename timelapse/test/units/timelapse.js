@@ -13,6 +13,8 @@ describe('timelapse app', function() {
             nitrogen.Message.find(session, { from: camera.id }, {}, function(err, messages) {
                 assert.ifError(err);
 
+                console.log("messages: " + JSON.stringify(messages));
+
                 callback(messages.length);
             });
         }, 1000);
@@ -21,9 +23,7 @@ describe('timelapse app', function() {
     it('should start correctly', function(done) {
         service.connect(camera, function(err, session, camera) {
             var params = {
-                camera_id: camera.id,
-                latitude: 36.9,
-                longitude: -122.09
+                camera_id: camera.id
             };
 
             var app = new TimelapseApp(session, params);
@@ -31,15 +31,9 @@ describe('timelapse app', function() {
             app.start();
 
             getMessageCount(session, camera, function(count) {
-                assert.notEqual(count, 0);
+                assert.notEqual(count, 1);
 
-                app.start();
-
-                getMessageCount(session, camera, function(newCount) {
-                    assert.equal(count, newCount);
-
-                    done();
-                });
+                done();
             });
         });
     });
