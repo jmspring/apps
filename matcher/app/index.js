@@ -47,7 +47,7 @@ Matcher.prototype.matchIfNoAdmin = function(device, principal, callback) {
         });
 
         if (!foundAdmin) {
-            this.session.log.info('matcher: device id: ' + device.id + ' has no admins, giving wildcard rights to principal: ' + principal.id);
+            self.session.log.info('matcher: device id: ' + device.id + ' has no admins, giving wildcard rights to principal: ' + principal.id);
             self.matchDevice(device, principal, callback);
         } else {
             self.session.log.info('matcher: device id: ' + device.id + ' already has admin(s): not matching.');
