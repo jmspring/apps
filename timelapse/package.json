@@ -15,7 +15,7 @@
     }
   ],
   "dependencies": {
-    "nitrogen": "~0.1.235",
+    "nitrogen": "~0.1.301",
     "suncalc": "~1.3.0"
   },
   "devDependencies": {
