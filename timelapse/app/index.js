@@ -13,11 +13,19 @@ Timelapse.prototype.sendShot = function() {
     if (this.params.latitude && this.params.longitude && this.params.only_daytime) {
         var times = SunCalc.getTimes(now, this.params.latitude, this.params.longitude);
 
-        if (times['sunset'].getTime() < now.getTime())
-            return;
+        console.log('sunset: ' + times['sunset'].getTime());
+        console.log('sunrise: ' + times['sunrise'].getTime());
+        console.log('now: ' + now.getTime());
 
-        if (now.getTime() < times['sunrise'].getTime())
+        if (times['sunset'].getTime() < now.getTime()) {
+            console.log('after sunset, skipping.');
             return;
+        }
+
+        if (now.getTime() < times['sunrise'].getTime()) {
+            console.log('before sunrise, skipping.');
+            return;
+        }
     }
 
     var shot = new nitrogen.Message({
