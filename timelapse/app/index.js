@@ -44,7 +44,7 @@ Timelapse.prototype.sendShot = function() {
     this.session.log.info('timelapse: sending shot: ' + JSON.stringify(shot));
 
     shot.send(this.session, function(err, shot) {
-        if (err) return self.session.log.info('timelapse: error sending shot: ' + JSON.strierr);
+        if (err) return self.session.log.info('timelapse: error sending shot: ' + JSON.stringify(err));
 
         self.session.log.info('timelapse: shot sent.');
     });
