@@ -4,6 +4,8 @@ var async = require('async')
   , webapp = express()
   , server = require('http').createServer(webapp)
   , io = require('socket.io').listen(server)
+  , exphbs = require('express3-handlebars')
+  , hbs = exphbs.create({ defaultLayout: 'main' })
   , nitrogen = require('nitrogen')
   , path = require('path')
   , shortid = require('shortid');
@@ -35,6 +37,8 @@ service.connect(app, function(err, session, app) {
             sockets[id].emit(message);
         });
     });
+
+    config.buildAuthorizeUri(app.id);
 });
 
 io.sockets.on('connection', function(socket) {
@@ -53,6 +57,15 @@ io.sockets.on('connection', function(socket) {
         });
     });
 });
+
+webapp.get('/', function(req, res) {
+    res.render('map/index', {
+        airpi_authorization_uri: config.airpi_authorization_uri
+    });
+});
+
+webapp.engine('handlebars', hbs.engine);
+webapp.set('view engine', 'handlebars');
 
 webapp.use(express.static(path.join(__dirname, '/static')));
 
