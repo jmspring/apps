@@ -1,0 +1,11 @@
+<a href="{{airpi_authorization_uri}}" class='btn green'>Add my AirPi</a>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io.connect('/');
+    socket.on('message', function (data) {
+      console.log(data);
+    });
+
+    socket.emit('start');
+</script>

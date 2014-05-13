@@ -18,7 +18,7 @@ var app = new nitrogen.Principal({
     nickname: 'airpi-visualization'
 });
 
-var data = {};
+var messages = {};
 var sockets = {};
 
 service.connect(app, function(err, session, app) {
@@ -28,37 +28,42 @@ service.connect(app, function(err, session, app) {
             { type: 'humidity' }
         ]
     }, function(message) {
-        if (!data[message.from])
-            data[message.from] = {};
+        if (!messages[message.from])
+            messages[message.from] = {};
 
-        data[message.from][message.type] = message;
+        messages[message.from][message.type] = message;
 
         async.each(Object.keys(sockets), function(id, callback) {
-            sockets[id].emit(message);
+            console.log('emitting message on socket: ' + id);
+            sockets[id].emit('message', message);
+            callback();
         });
     });
 
     config.buildAuthorizeUri(app.id);
 });
 
+server.listen(config.port);
+
 io.sockets.on('connection', function(socket) {
-    socket.id = shortid.generate();
-    sockets[socket.id] = socket;
+    socket.n2id = shortid.generate();
+    sockets[socket.n2id] = socket;
 
     socket.on('disconnect', function() {
-        delete sockets[socket.id];
+        delete sockets[socket.n2id];
     });
 
     socket.on('start', function() {
-        Object.keys(data).forEach(function(deviceId) {
-            Object.keys(data[deviceId]).forEach(function(typeKey) {
-                socket.emit('data', data[deviceId][typeKey]);
+        console.log('got start');
+        Object.keys(messages).forEach(function(deviceId) {
+            Object.keys(messages[deviceId]).forEach(function(typeKey) {
+                socket.emit('message', messages[deviceId][typeKey]);
             });
         });
     });
 });
 
-webapp.get('/', function(req, res) {
+webapp.get('/index.html', function(req, res) {
     res.render('map/index', {
         airpi_authorization_uri: config.airpi_authorization_uri
     });
@@ -68,5 +73,3 @@ webapp.engine('handlebars', hbs.engine);
 webapp.set('view engine', 'handlebars');
 
 webapp.use(express.static(path.join(__dirname, '/static')));
-
-server.listen(config.port);
