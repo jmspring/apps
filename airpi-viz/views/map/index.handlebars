@@ -3,29 +3,56 @@
 <div id='mapDiv' style="position: fixed; top: 0px; left: 0px; right:0px; bottom:0px;"></div>
 
 <script src="/socket.io/socket.io.js"></script>
+<script src="/rainbow.js"></script>
+
 <script>
+    var tempGradient = new Rainbow();
+    tempGradient.setSpectrum('white', 'blue','green','red');
+    tempGradient.setNumberRange(-10,40);
+
     var App = {
-        state: {}
+        state: {},
+        gradients: {
+            'temperature': tempGradient
+        }
     };
 
     var socket = io.connect('/');
     socket.on('message', function (message) {
-        console.dir(message);
-
         if (!App.state[message.from])
             App.state[message.from] = {};
+
         App.state[message.from][message.type] = message;
 
-        console.log('updating map for ' + message.from);
-        updateMap(message.from);
+        var location = App.state[message.from]['location'];
+        if (!location) return;
+
+        var selectedField = 'temperature'
+
+        var value = App.state[message.from][selectedField];
+        if (!value) return;
+
+        value = value.body[selectedField];
+        var hexColor = App.gradients[selectedField].colourAt(value);
+
+        var radius = 5;      //radius of the circle
+        var latitude = location.body.latitude;
+        var longitude = location.body.longitude;
+
+        if (App.state[message.from]['polygon']) {
+            console.log('removing old polygon');
+            App.map.entities.remove(App.state[deviceId]['polygon']);
+        }
+
+        App.state[message.from]['polygon'] = drawMapCircle(radius, latitude, longitude, hexColor);
     });
 
     $(document).ready(function() {
         App.map = new Microsoft.Maps.Map(document.getElementById("mapDiv"), {
-            center: new Microsoft.Maps.Location(15, 0),
-            credentials: "AorOl36BiR6PMaR_7WfXx5nxIwOUFqFQHeaomXCNPVHtyTcElRiCfbDfotHa1cZZ",
+            center: new Microsoft.Maps.Location(53, 0),
+            credentials: "Akbhia6_9IoahE9Q2TyAVORP_IHbhkxmTiy25f8WXYpnt_pzIA0AhgvyDVHKJkhi",
             enableSearchLogo: false,
-            zoom: 3
+            zoom: 7
         });
 
         window.setTimeout(function () {
@@ -42,62 +69,7 @@
         socket.emit('start');
     });
 
-    function updateMap(deviceId) {
-        var R = 6371; // earth's mean radius in km
-
-        console.dir(App.state[deviceId]);
-        var location = App.state[deviceId]['location'];
-        if (!location) return;
-
-        var radius = 10;      //radius of the circle
-        var latitude = location.body.latitude;
-        var longitude = location.body.longitude;
-
-        var backgroundColor = new Microsoft.Maps.Color(40, 200, 0, 0);
-        var borderColor = new Microsoft.Maps.Color(128, 200, 0, 0);
-
-        var lat = (latitude * Math.PI) / 180;
-        var lon = (longitude * Math.PI) / 180;
-
-        var d = parseFloat(radius) / R;
-        var circlePoints = new Array();
-
-        for (x = 0; x <= 360; x += 1) {
-            var p2 = new Microsoft.Maps.Location(0, 0);
-            brng = x * Math.PI / 180;
-            p2.latitude = Math.asin(Math.sin(lat) * Math.cos(d) + Math.cos(lat) * Math.sin(d) * Math.cos(brng));
-
-            p2.longitude = ((lon + Math.atan2(Math.sin(brng) * Math.sin(d) * Math.cos(lat),
-                             Math.cos(d) - Math.sin(lat) * Math.sin(p2.latitude))) * 180) / Math.PI;
-            p2.latitude = (p2.latitude * 180) / Math.PI;
-            circlePoints.push(p2);
-        }
-
-        if (App.state[deviceId]['polygon']) {
-            console.log('removing old polygon');
-            App.map.entities.remove(App.state[deviceId]['polygon']);
-        }
-
-        App.state[deviceId]['polygon'] = new Microsoft.Maps.Polygon(circlePoints, {
-            fillColor: backgroundColor,
-            strokeColor: borderColor,
-            strokeThickness: 1
-        });
-
-        App.map.entities.push(App.state[deviceId]['polygon']);
-    }
-
-    var addNavButton = function (mapElement, content, onclick) {
-        var container = $(mapElement).find('.LogoContainer');
-
-        container.prepend(
-            // Add the Custom Button itself
-            $('<a>').attr('href', '#').addClass('btn green').attr('style', 'margin-top: -7px; margin-left: 10px').
-                append($('<span>').html(content).click(onclick))
-        );
-    };
-
 </script>
 
-<script charset="UTF-8" type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0">
-</script>
+<script src="/bingMaps.js"></script>
+<script src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
