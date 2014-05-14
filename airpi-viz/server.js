@@ -21,6 +21,13 @@ var app = new nitrogen.Principal({
 var messages = {};
 var sockets = {};
 
+function updateAllSockets(message) {
+    async.each(Object.keys(sockets), function(id, callback) {
+        sockets[id].emit('message', message);
+        callback();
+    });
+}
+
 service.connect(app, function(err, session, app) {
     session.onMessage({
         $or: [
@@ -28,16 +35,26 @@ service.connect(app, function(err, session, app) {
             { type: 'humidity' }
         ]
     }, function(message) {
-        if (!messages[message.from])
-            messages[message.from] = {};
+        if (!messages[message.from]) {
+
+            var location = new nitrogen.Message({
+                from: message.from,
+                type: 'location',
+                body: {
+                    latitude: 51.5072 + 0.5 * Math.random(),
+                    longitude: -0.1275 + 0.5 * Math.random()
+                }
+            });
+
+            messages[message.from] = {
+                location: location
+            };
+
+            updateAllSockets(location);
+        }
 
         messages[message.from][message.type] = message;
-
-        async.each(Object.keys(sockets), function(id, callback) {
-            console.log('emitting message on socket: ' + id);
-            sockets[id].emit('message', message);
-            callback();
-        });
+        updateAllSockets(message);
     });
 
     config.buildAuthorizeUri(app.id);
@@ -54,7 +71,6 @@ io.sockets.on('connection', function(socket) {
     });
 
     socket.on('start', function() {
-        console.log('got start');
         Object.keys(messages).forEach(function(deviceId) {
             Object.keys(messages[deviceId]).forEach(function(typeKey) {
                 socket.emit('message', messages[deviceId][typeKey]);

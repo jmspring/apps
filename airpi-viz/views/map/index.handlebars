@@ -1,11 +1,103 @@
-<a href="{{airpi_authorization_uri}}" class='btn green'>Add my AirPi</a>
+<a href="{{airpi_authorization_uri}}" style="z-index: 100; float:right;" class='btn green'>Add my AirPi</a>
+
+<div id='mapDiv' style="position: fixed; top: 0px; left: 0px; right:0px; bottom:0px;"></div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
+    var App = {
+        state: {}
+    };
+
     var socket = io.connect('/');
-    socket.on('message', function (data) {
-      console.log(data);
+    socket.on('message', function (message) {
+        console.dir(message);
+
+        if (!App.state[message.from])
+            App.state[message.from] = {};
+        App.state[message.from][message.type] = message;
+
+        console.log('updating map for ' + message.from);
+        updateMap(message.from);
     });
 
-    socket.emit('start');
+    $(document).ready(function() {
+        App.map = new Microsoft.Maps.Map(document.getElementById("mapDiv"), {
+            center: new Microsoft.Maps.Location(15, 0),
+            credentials: "AorOl36BiR6PMaR_7WfXx5nxIwOUFqFQHeaomXCNPVHtyTcElRiCfbDfotHa1cZZ",
+            enableSearchLogo: false,
+            zoom: 3
+        });
+
+        window.setTimeout(function () {
+            // Add Custom Button to NavBar
+            addNavButton(
+                document.getElementById('mapDiv'), // <- Maps DIV
+                'Add my AirPi', // <- Content of Button - You can put HTML in here if you want
+                function () { // <- Method to call during buttons Click event
+                    window.location = '{{airpi_authorization_uri}}';
+                }
+            );
+        }, 400);
+
+        socket.emit('start');
+    });
+
+    function updateMap(deviceId) {
+        var R = 6371; // earth's mean radius in km
+
+        console.dir(App.state[deviceId]);
+        var location = App.state[deviceId]['location'];
+        if (!location) return;
+
+        var radius = 10;      //radius of the circle
+        var latitude = location.body.latitude;
+        var longitude = location.body.longitude;
+
+        var backgroundColor = new Microsoft.Maps.Color(40, 200, 0, 0);
+        var borderColor = new Microsoft.Maps.Color(128, 200, 0, 0);
+
+        var lat = (latitude * Math.PI) / 180;
+        var lon = (longitude * Math.PI) / 180;
+
+        var d = parseFloat(radius) / R;
+        var circlePoints = new Array();
+
+        for (x = 0; x <= 360; x += 1) {
+            var p2 = new Microsoft.Maps.Location(0, 0);
+            brng = x * Math.PI / 180;
+            p2.latitude = Math.asin(Math.sin(lat) * Math.cos(d) + Math.cos(lat) * Math.sin(d) * Math.cos(brng));
+
+            p2.longitude = ((lon + Math.atan2(Math.sin(brng) * Math.sin(d) * Math.cos(lat),
+                             Math.cos(d) - Math.sin(lat) * Math.sin(p2.latitude))) * 180) / Math.PI;
+            p2.latitude = (p2.latitude * 180) / Math.PI;
+            circlePoints.push(p2);
+        }
+
+        if (App.state[deviceId]['polygon']) {
+            console.log('removing old polygon');
+            App.map.entities.remove(App.state[deviceId]['polygon']);
+        }
+
+        App.state[deviceId]['polygon'] = new Microsoft.Maps.Polygon(circlePoints, {
+            fillColor: backgroundColor,
+            strokeColor: borderColor,
+            strokeThickness: 1
+        });
+
+        App.map.entities.push(App.state[deviceId]['polygon']);
+    }
+
+    var addNavButton = function (mapElement, content, onclick) {
+        var container = $(mapElement).find('.LogoContainer');
+
+        container.prepend(
+            // Add the Custom Button itself
+            $('<a>').attr('href', '#').addClass('btn green').attr('style', 'margin-top: -7px; margin-left: 10px').
+                append($('<span>').html(content).click(onclick))
+        );
+    };
+
+</script>
+
+<script charset="UTF-8" type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0">
 </script>
