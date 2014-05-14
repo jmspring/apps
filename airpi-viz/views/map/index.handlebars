@@ -10,24 +10,30 @@
     tempGradient.setSpectrum('white', 'blue','green','red');
     tempGradient.setNumberRange(-10,40);
 
+    var humidityGradient = new Rainbow();
+    humidityGradient.setSpectrum('blue','green','red');
+    humidityGradient.setNumberRange(0,100);
+
     var App = {
         state: {},
         gradients: {
+            'humidity': humidityGradient,
             'temperature': tempGradient
         }
     };
 
     var socket = io.connect('/');
-    socket.on('message', function (message) {
+
+    var processMessage = function(message) {
         if (!App.state[message.from])
-            App.state[message.from] = {};
+        App.state[message.from] = {};
 
         App.state[message.from][message.type] = message;
 
         var location = App.state[message.from]['location'];
         if (!location) return;
 
-        var selectedField = 'temperature'
+        var selectedField = $('#type').val();
 
         var value = App.state[message.from][selectedField];
         if (!value) return;
@@ -40,12 +46,13 @@
         var longitude = location.body.longitude;
 
         if (App.state[message.from]['polygon']) {
-            console.log('removing old polygon');
-            App.map.entities.remove(App.state[deviceId]['polygon']);
+            App.map.entities.remove(App.state[message.from]['polygon']);
         }
 
         App.state[message.from]['polygon'] = drawMapCircle(radius, latitude, longitude, hexColor);
-    });
+    }
+
+    socket.on('message', processMessage);
 
     $(document).ready(function() {
         App.map = new Microsoft.Maps.Map(document.getElementById("mapDiv"), {
@@ -56,14 +63,35 @@
         });
 
         window.setTimeout(function () {
-            // Add Custom Button to NavBar
-            addNavButton(
-                document.getElementById('mapDiv'), // <- Maps DIV
-                'Add my AirPi', // <- Content of Button - You can put HTML in here if you want
-                function () { // <- Method to call during buttons Click event
-                    window.location = '{{airpi_authorization_uri}}';
-                }
+            var container = $('#mapDiv').find('.LogoContainer');
+
+            container.prepend('<select id="type" class="form-control" style="margin-bottom: 10px;"><option value="temperature">Temperature</option><option value="humidity">Humidity</option></select>');
+
+            container.prepend(
+                // Add the Custom Button itself
+                $('<a>').attr('href', '#')
+                        .addClass('btn green')
+                        .attr('style', 'margin-bottom: 10px')
+                        .append($('<span>')
+                        .html('Add my AirPi')
+                        .click(function() {
+                            window.location = '{{airpi_authorization_uri}}';
+                        }))
             );
+
+            $("#type").change(function() {
+                var newType = $("#type").val();
+                for (var id in App.state) {
+                    if (App.state[id][newType]) {
+                        processMessage(App.state[id][newType])
+                    } else {
+                        if (App.state[id]['polygon']) {
+                            App.map.entities.remove(App.state[id]['polygon']);
+                            App.state[id]['polygon'] = null;
+                        }
+                    }
+                }
+            });
         }, 400);
 
         socket.emit('start');

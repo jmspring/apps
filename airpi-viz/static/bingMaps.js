@@ -1,13 +1,3 @@
-var addNavButton = function (mapElement, content, onclick) {
-    var container = $(mapElement).find('.LogoContainer');
-
-    container.prepend(
-        // Add the Custom Button itself
-        $('<a>').attr('href', '#').addClass('btn green').attr('style', 'margin-top: -7px; margin-left: 10px').
-            append($('<span>').html(content).click(onclick))
-    );
-};
-
 function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? {

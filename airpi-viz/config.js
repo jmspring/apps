@@ -2,9 +2,9 @@ var nitrogen = require('nitrogen')
   , Store = require('nitrogen-leveldb-store');
 
 var config = {
-    host: 'localhost',
-    http_port: 3030,
-    protocol: 'http'
+    host:       process.env.HOST,
+    http_port:  process.env.HTTP_PORT,
+    protocol:   process.env.PROTOCOL
 };
 
 config.store = new Store(config);
