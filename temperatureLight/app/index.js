@@ -39,7 +39,7 @@ TemperatureLight.prototype.start = function() {
         new nitrogen.Message({
             type: 'lightCommand',
             to: self.params.light_id,
-            tags: [ nitrogen.CommandManager.commandTag(self.session) ],
+            tags: [ nitrogen.CommandManager.commandTag(this.params.light_id) ],
             body: {
               on: true,
               bri: 255,
