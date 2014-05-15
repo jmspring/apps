@@ -9,8 +9,7 @@
   "version": "0.1.11",
   "dependencies": {
       "async": "~0.2.9",
-      "nitrogen": "~0.1.233",
-      "twitter": "~0.2.5"
+      "nitrogen": "~0.1.233"
   },
   "devDependencies": {
       "mocha": "*" 
