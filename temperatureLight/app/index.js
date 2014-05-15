@@ -11,8 +11,8 @@ function TemperatureLight(session, params) {
 }
 
 TemperatureLight.prototype.computeHueFromTemp = function(temp) {
-    temp = Math.min(temp, this.min_temp);
-    temp = Math.max(temp, this.max_temp);
+    temp = Math.max(temp, this.min_temp);
+    temp = Math.min(temp, this.max_temp);
     this.session.log.info('temp for hue: ' + temp);
 
     var adjustedTemp = temp - this.min_temp;
@@ -39,7 +39,7 @@ TemperatureLight.prototype.start = function() {
         new nitrogen.Message({
             type: 'lightCommand',
             to: self.params.light_id,
-            tags: [ nitrogen.CommandManager.commandTag(this.params.light_id) ],
+            tags: [ nitrogen.CommandManager.commandTag(self.params.light_id) ],
             body: {
               on: true,
               bri: 255,
