@@ -1,22 +1,19 @@
 var nitrogen = require('nitrogen')
   , Twitter = require('twitter')
+  , CountAnalyzer = require('./countAnalyzer');
   , TwitterAnalyzer = require('./twitterAnalyzer');
 
-function TwitterLightApp(session, params) {
+function TwitterLight(session, params) {
     this.session = session;
     this.params = params;
 }
 
-TwitterLightApp.prototype.computeHueFromMetric = function(metric) {
-    this.session.log.info('initial metric: ' + metric);
-
-    metric *= 2;
-
-    metric = Math.min(metric, 4.0);
+TwitterLight.prototype.computeHueFromMetric = function(metric) {
+    metric = Math.min(metric, 10.0);
     metric = Math.max(metric, 0.0);
     this.session.log.info('final metric: ' + metric);
 
-    return Math.floor(46920 - 11730 * metric);
+    return Math.floor(46920 - 4692 * metric);
 };
 
 TwitterLightApp.prototype.update = function() {
@@ -52,7 +49,6 @@ TwitterLightApp.prototype.start = function() {
      'light_id',
      'twitter_query',
      'measurement_interval',
-     'average_interval',
      'update_interval'].forEach(function(key) {
         if (!self.params[key]) {
             self.session.log.error('required parameter ' + key +' not supplied.');
@@ -67,15 +63,16 @@ TwitterLightApp.prototype.start = function() {
         access_token_secret:  this.params.twitter_access_token_secret,
     });
 
-    tweetAnalyzer = new TwitterAnalyzer({
+    tweetAnalyzer = new CountAnalyzer({
         twitter:              twitter,
         query:                this.params.twitter_query,
-        measurement_interval: this.params.measurement_interval,
-        average_interval:     this.params.average_interval
+        measurement_interval: this.params.measurement_interval
     });
 
     this.update();
-    this.fetchInterval = setInterval(function() { self.update(); }, this.params.update_interval * 1000);
+    this.fetchInterval = setInterval(function() {
+      self.update();
+    }, this.params.update_interval * 1000);
 };
 
 TwitterLightApp.prototype.stop = function() {
