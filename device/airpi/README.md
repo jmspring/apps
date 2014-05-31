@@ -1,3 +1,3 @@
-# Philips Hue Bridge
+# AirPi
 
-This Nitrogen application finds the Philip Hue bridge(s) on the local network, connects to them, and connects all of the attached lights on that hub to Nitrogen.
+Provides a device application for the AirPi (http://airpi.es) on Nitrogen on a Raspberry Pi.
