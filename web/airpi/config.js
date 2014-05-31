@@ -1,5 +1,5 @@
 var nitrogen = require('nitrogen')
-  , Store = require('nitrogen-leveldb-store');
+  , Store = require('nitrogen-static-store');
 
 var config = {
     host:       process.env.HOST,
@@ -7,7 +7,14 @@ var config = {
     protocol:   process.env.PROTOCOL
 };
 
-config.store = new Store(config);
+config.store = new Store({
+    'principal.airpi-visualization': {
+        type:        'app',
+        id:          process.env.APP_ID,
+        public_key:  process.env.APP_PUBLIC_KEY,
+        private_key: process.env.APP_PRIVATE_KEY
+    }
+});
 
 config.api_key = process.env.API_KEY;
 
