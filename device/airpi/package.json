@@ -1,0 +1,15 @@
+{
+  "name": "airpi",
+  "homepage": "https://github.com/nitrogenjs/apps",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nitrogenjs/apps"
+  },
+  "version": "0.1.6",
+  "main": "./app",
+  "dependencies": {
+    "nitrogen": "~0.1.315",
+    "nitrogen-airpi": "~0.1.6",
+    "nitrogen-sensor": "~0.1.2"
+  }
+}
