@@ -65,7 +65,7 @@
         window.setTimeout(function () {
             var container = $('#mapDiv').find('.LogoContainer');
 
-            container.prepend('<select id="type" class="form-control" style="margin-bottom: 10px;"><option value="temperature">Temperature</option><option value="humidity">Humidity</option></select>');
+            container.prepend('<select id="type" class="form-control" style="margin-bottom: 10px;"><option value="temperature">Temperature</option><option value="pressure">Pressure</option></select>');
 
             container.prepend(
                 // Add the Custom Button itself
@@ -75,7 +75,7 @@
                         .append($('<span>')
                         .html('Add my AirPi')
                         .click(function() {
-                            window.location = '{{airpi_authorization_uri}}';
+                            window.location = 'https://api.nitrogen.io/user/authorize?api_key=airpi-local&app_id=538f4d0b454a8a3e0427264c&redirect_uri=http%3A%2F%2Flocalhost%3A3010%2Findex.html&scope=%5B%7B"actions"%3A%5B"view"%2C"subscribe"%5D%2C"filter"%3A%7B"%24or"%3A%5B%7B"tags"%3A"sends%3Atemperature"%7D%2C%7B"tags"%3A"sends%3Ahumidity"%7D%5D%7D%7D%5D';
                         }))
             );
 

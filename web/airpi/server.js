@@ -12,10 +12,10 @@ var async = require('async')
 
 var service = new nitrogen.Service(config);
 
-var app = new nitrogen.Principal({
-    api_key: config.API_KEY,
-    type: 'app',
-    nickname: 'airpi-visualization'
+var app = new nitrogen.Principal({ 
+    api_key:    config.APP_API_KEY,
+    type:       'app',
+    nickname:   'airpi-visualization'
 });
 
 var messages = {};
@@ -28,32 +28,39 @@ function updateAllSockets(message) {
     });
 }
 
+function findLocationMessage(session, principalId) {
+    nitrogen.Message.find(session, { type: 'location', from: principalId }, { sort: { ts: -1 }, limit: 1 }, function(err, locations) {
+        if (err) return;
+
+        // if we got a location message and didn't in the meantime get one over the subscription.
+        if (locations.length > 0 && !messages[principalId]['location']) {
+            messages[principalId]['location'] = locations[0];
+
+            updateAllSockets(locations[0]);
+        }
+    });
+}
+
 service.connect(app, function(err, session, app) {
+    if (err) return console.log('airpi: connect failed: ' + err);
+
     session.onMessage({
         $or: [
+            { type: 'location' },
             { type: 'temperature' },
+            { type: 'pressure' },
             { type: 'humidity' }
         ]
     }, function(message) {
+
         if (!messages[message.from]) {
+            messages[message.from] = {};
 
-            var location = new nitrogen.Message({
-                from: message.from,
-                type: 'location',
-                body: {
-                    latitude: 51.5072 + 0.5 * Math.random(),
-                    longitude: -0.1275 + 0.5 * Math.random()
-                }
-            });
-
-            messages[message.from] = {
-                location: location
-            };
-
-            updateAllSockets(location);
+            findLocationMessage(session, message.from);
         }
 
         messages[message.from][message.type] = message;
+
         updateAllSockets(message);
     });
 
