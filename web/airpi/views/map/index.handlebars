@@ -10,14 +10,14 @@
     tempGradient.setSpectrum('white', 'blue','green','red');
     tempGradient.setNumberRange(-10,40);
 
-    var humidityGradient = new Rainbow();
-    humidityGradient.setSpectrum('blue','green','red');
-    humidityGradient.setNumberRange(0,100);
+    var pressureGradient = new Rainbow();
+    pressureGradient.setSpectrum('blue','green','red');
+    pressureGradient.setNumberRange(100000,104000);
 
     var App = {
         state: {},
         gradients: {
-            'humidity': humidityGradient,
+            'pressure': pressureGradient,
             'temperature': tempGradient
         }
     };
@@ -50,16 +50,17 @@
         }
 
         App.state[message.from]['polygon'] = drawMapCircle(radius, latitude, longitude, hexColor);
+        App.state[message.from]['pin'] = addPin(latitude, longitude);
     }
 
     socket.on('message', processMessage);
 
     $(document).ready(function() {
         App.map = new Microsoft.Maps.Map(document.getElementById("mapDiv"), {
-            center: new Microsoft.Maps.Location(53, 0),
+            center: new Microsoft.Maps.Location(30, 0),
             credentials: "Akbhia6_9IoahE9Q2TyAVORP_IHbhkxmTiy25f8WXYpnt_pzIA0AhgvyDVHKJkhi",
             enableSearchLogo: false,
-            zoom: 7
+            zoom: 3 
         });
 
         window.setTimeout(function () {
@@ -75,7 +76,7 @@
                         .append($('<span>')
                         .html('Add my AirPi')
                         .click(function() {
-                            window.location = 'https://api.nitrogen.io/user/authorize?api_key=airpi-local&app_id=538f4d0b454a8a3e0427264c&redirect_uri=http%3A%2F%2Flocalhost%3A3010%2Findex.html&scope=%5B%7B"actions"%3A%5B"view"%2C"subscribe"%5D%2C"filter"%3A%7B"%24or"%3A%5B%7B"tags"%3A"sends%3Atemperature"%7D%2C%7B"tags"%3A"sends%3Ahumidity"%7D%5D%7D%7D%5D';
+                            window.location = 'https://api.nitrogen.io/user/authorize?api_key=airpi&app_id=538f4d0b454a8a3e0427264c&redirect_uri=http%3A%2F%2Fairpi.cloudapp.net%2Findex.html&scope=%5B%7B"actions"%3A%5B"view"%2C"subscribe"%5D%2C"filter"%3A%7B"%24or"%3A%5B%7B"tags"%3A"sends%3Atemperature"%7D%2C%7B"tags"%3A"sends%3Ahumidity"%7D%5D%7D%7D%5D';
                         }))
             );
 
@@ -87,8 +88,13 @@
                     } else {
                         if (App.state[id]['polygon']) {
                             App.map.entities.remove(App.state[id]['polygon']);
-                            App.state[id]['polygon'] = null;
+                            delete App.state[id]['polygon'];
                         }
+
+                        if (App.state[id]['pin']) {
+                            App.map.entities.remove(App.state[id]['pin']);
+                            delete App.state[id]['pin'];
+                        } 
                     }
                 }
             });
