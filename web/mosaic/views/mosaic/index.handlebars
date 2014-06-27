@@ -3,6 +3,8 @@
 <a href="{{app_authorization_uri}}" style="margin-top: 25px" class='btn green'>Add Camera</a>
 
 <script src="/socket.io/socket.io.js"></script>
+<script src="/moment.js"></script>
+
 <script>
     var socket = io.connect('/');
     var cameras = {};
@@ -18,7 +20,7 @@
 
     function updateImage(cameraObj) {
         var date = new Date(Date.parse(cameraObj.image.ts));
-        $("#" + cameraObj.image.from).html("<img width=300 src='" + cameraObj.image.body.url + "'><div><h5>" + cameraObj.camera.name + " " + date + "</h5></div>");
+        $("#" + cameraObj.image.from).html("<img width=300 src='" + cameraObj.image.body.url + "'><div><h5>" + cameraObj.camera.name + ": " + moment(cameraObj.image.ts).format("LLL") + "</h5></div>");
     }
 
     socket.on('image', function(image) {
