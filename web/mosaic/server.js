@@ -60,7 +60,7 @@ service.connect(app, function(err, session, app) {
 
         principals.forEach(function(camera) {
 
-           nitrogen.Message.find(session, { type: 'image' }, { limit: 1, sort: "-1" }, function(err, messages) {
+           nitrogen.Message.find(session, { type: 'image' }, { limit: 1, sort: { ts: -1 } }, function(err, messages) {
                if (err) return session.log.error('message request failed: ' + err);
 
                if (messages.length) {
@@ -99,7 +99,6 @@ io.sockets.on('connection', function(socket) {
 });
 
 webapp.get('/index.html', function(req, res) {
-    console.log(config.camera_authorization_uri);
     res.render('mosaic/index', {
         app_authorization_uri: config.app_authorization_uri
     });

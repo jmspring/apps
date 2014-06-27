@@ -1,15 +1,13 @@
-<a href="{{app_authorization_uri}}" style="z-index: 100; float:right;" class='btn green'>Add my Cameras</a>
+<div id="mosaic"></div>
+
+<a href="{{app_authorization_uri}}" style="margin-top: 25px" class='btn green'>Add Camera</a>
 
 <script src="/socket.io/socket.io.js"></script>
-
-<div id="mosaic">
-</div>
-
 <script>
     var socket = io.connect('/');
     var cameras = {};
 
-    function createDivIfDoesntExist(cameraId) {
+    function createDivIfNotExist(cameraId) {
         var divExists = $("#" + cameraId).length > 0;
         if (!divExists) {
             $('#mosaic').append(
@@ -18,23 +16,23 @@
         }
     }
 
-    function updateImage(image) {
-        console.log(image.body.url);
-        $("#" + image.from).html("<img width=300 src='" + image.body.url + "'>");
+    function updateImage(cameraObj) {
+        var date = new Date(Date.parse(cameraObj.image.ts));
+        $("#" + cameraObj.image.from).html("<img width=300 src='" + cameraObj.image.body.url + "'><div><h5>" + cameraObj.camera.name + " " + date + "</h5></div>");
     }
 
     socket.on('image', function(image) {
-        var div = createDivIfDoesntExist(image.from);
+        var div = createDivIfNotExist(image.from);
 
         if (!cameras[image.from]) cameras[image.from] = {};
 
         cameras[image.from].image = image;
 
-        updateImage(image);
+        updateImage(cameras[image.from]);
     });
 
     socket.on('camera', function(camera) {
-        var div = createDivIfDoesntExist(camera.id);
+        var div = createDivIfNotExist(camera.id);
 
         if (!cameras[camera.id]) cameras[camera.id] = {};
 
