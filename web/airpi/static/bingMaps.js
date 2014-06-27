@@ -7,13 +7,27 @@ function hexToRgb(hex) {
     } : null;
 }
 
+function addPin(latitude, longitude) {
+
+   var location = new Microsoft.Maps.Location(latitude, longitude);
+   var pin = new Microsoft.Maps.Pushpin(location, {
+       draggable: false,
+       width: 24,
+       height: 24,
+       icon: "/red-pushpin.png"
+   }); 
+   App.map.entities.push(pin);
+
+   return pin;
+}
+
 function drawMapCircle(radius, latitude, longitude, hexColor) {
     var R = 6371; // earth's mean radius in km
 
     var rgbColor = hexToRgb(hexColor);
 
-    var backgroundColor = new Microsoft.Maps.Color(80, rgbColor.r, rgbColor.g, rgbColor.b);
-    var borderColor = new Microsoft.Maps.Color(128, rgbColor.r, rgbColor.g, rgbColor.b);
+    var backgroundColor = new Microsoft.Maps.Color(115, rgbColor.r, rgbColor.g, rgbColor.b);
+    var borderColor = new Microsoft.Maps.Color(135, rgbColor.r, rgbColor.g, rgbColor.b);
 
     var lat = (latitude * Math.PI) / 180;
     var lon = (longitude * Math.PI) / 180;
