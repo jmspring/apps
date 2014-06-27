@@ -1,0 +1,49 @@
+<a href="{{app_authorization_uri}}" style="z-index: 100; float:right;" class='btn green'>Add my Cameras</a>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<div id="mosaic">
+</div>
+
+<script>
+    var socket = io.connect('/');
+    var cameras = {};
+
+    function createDivIfDoesntExist(cameraId) {
+        var divExists = $("#" + cameraId).length > 0;
+        if (!divExists) {
+            $('#mosaic').append(
+                $("<div id='" + cameraId + "'></div>")
+            );
+        }
+    }
+
+    function updateImage(image) {
+        console.log(image.body.url);
+        $("#" + image.from).html("<img width=300 src='" + image.body.url + "'>");
+    }
+
+    socket.on('image', function(image) {
+        var div = createDivIfDoesntExist(image.from);
+
+        if (!cameras[image.from]) cameras[image.from] = {};
+
+        cameras[image.from].image = image;
+
+        updateImage(image);
+    });
+
+    socket.on('camera', function(camera) {
+        var div = createDivIfDoesntExist(camera.id);
+
+        if (!cameras[camera.id]) cameras[camera.id] = {};
+
+        cameras[camera.id].camera = camera;
+
+        if (cameras[camera.id].image) updateImage(cameras[camera.id].image);
+    });
+
+    $(document).ready(function() {
+        socket.emit('start');
+    });
+</script>
