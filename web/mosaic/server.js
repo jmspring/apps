@@ -47,39 +47,56 @@ function sendCamera(camera) {
     });
 }
 
-service.connect(app, function(err, session, app) {
-    if (err) return console.log('airpi: connect failed: ' + err);
-
-    session.onMessage({ type: 'image' }, function(image) {
-        session.log.info('got realtime image: ' + image.body.url);
-        sendImage(session, image);
-    });
-
+function findCameras(session) {
     nitrogen.Principal.find(session, { tags: 'sends:image' }, {}, function(err, principals) {
         if (err) return console.log('principal request failed: ' + err);
 
         principals.forEach(function(camera) {
+           if (!cameras[camera.id]) {
+               nitrogen.Message.find(session, { type: 'image' }, { limit: 1, sort: { ts: -1 } }, function(err, messages) {
+                   if (err) return session.log.error('message request failed: ' + err);
 
-           nitrogen.Message.find(session, { type: 'image' }, { limit: 1, sort: { ts: -1 } }, function(err, messages) {
-               if (err) return session.log.error('message request failed: ' + err);
+                   if (messages.length) {
+                       session.log.info('last image for camera: ' + JSON.stringify(messages));
+                       sendImage(session, messages[0]);
+                   }
+               });
 
-               if (messages.length) {
-                   session.log.info('last image for camera: ' + JSON.stringify(messages));
-                   sendImage(session, messages[0]);
-               }
-           });
-
-           sendCamera(camera);
+               sendCamera(camera);
+           }
         });
+    });
+}
+
+service.connect(app, function(err, session, app) {
+    if (err) return console.log('airpi: connect failed: ' + err);
+
+    findCameras(session);
+
+    session.onMessage({ type: 'image' }, function(image) {
+        sendImage(session, image);
     });
 
     config.buildAuthorizationUri();
+
+    webapp.get('/', function(req, res) {
+        if (req.query.post_authorize)
+            findCameras(session);
+
+        res.render('mosaic/index', {
+            app_authorization_uri: config.app_authorization_uri
+        });
+    });
+
+    server.listen(config.port);
+
+    webapp.engine('handlebars', hbs.engine);
+    webapp.set('view engine', 'handlebars');
+
+    webapp.use(express.static(path.join(__dirname, '/static')));
 });
 
-server.listen(config.port);
-
 io.sockets.on('connection', function(socket) {
-
     socket.n2id = shortid.generate();
     sockets[socket.n2id] = socket;
 
@@ -97,14 +114,3 @@ io.sockets.on('connection', function(socket) {
         });
     });
 });
-
-webapp.get('/index.html', function(req, res) {
-    res.render('mosaic/index', {
-        app_authorization_uri: config.app_authorization_uri
-    });
-});
-
-webapp.engine('handlebars', hbs.engine);
-webapp.set('view engine', 'handlebars');
-
-webapp.use(express.static(path.join(__dirname, '/static')));

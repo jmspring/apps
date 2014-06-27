@@ -16,24 +16,19 @@ config.store = new Store({
     }
 });
 
-config.api_key = process.env.APP_API_KEY;
-
 config.device_scope = [{
     actions: [ 'view', 'subscribe' ],
     filter: {
-        $or: [
-            { tags: 'sends:image' }
-        ]
+        tags: 'sends:image'
     }
 }];
 
 config.buildAuthorizationUri = function() {
-    config.app_authorization_uri = config.endpoints.users + "/authorize?api_key=" + encodeURIComponent(config.api_key) +
+    config.app_authorization_uri = config.endpoints.users + "/authorize" +
+        "?api_key=" + encodeURIComponent(process.env.APP_API_KEY) +
         "&app_id=" + encodeURIComponent(process.env.APP_ID) +
         "&redirect_uri=" + encodeURIComponent(process.env.APP_URL) +
         "&scope=" + encodeURIComponent(JSON.stringify(config.device_scope));
-
-    console.log(config.app_authorization_uri);
 };
 
 config.log_levels = ['info', 'warn', 'error'];
