@@ -28,11 +28,15 @@ Timelapse.prototype.sendShot = function() {
         }
     }
 
+    var expirationTime = new Date(now.getTime() + 0.5 * this.params.period * 1000);
+
+
     var shot = new nitrogen.Message({
        to: this.params.camera_id,
        tags: [ nitrogen.CommandManager.commandTag(this.params.camera_id) ],
        type: 'cameraCommand',
-       expires: new Date(now.getTime() + 0.5 * this.params.period * 1000),
+       expires: expirationTime,
+       index_until: expirationTime,
        body: {
            command: 'snapshot',
            message: {
