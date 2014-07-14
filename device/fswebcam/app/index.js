@@ -7,13 +7,11 @@ function FSWebcamCameraApp(session, params) {
 }
 
 FSWebcamCameraApp.prototype.start = function() {
-    var camera = new FSWebcamCamera({
-        nickname: 'camera',
-        id: this.session.principal.id
-    });
+    var camera = new FSWebcamCamera(this.session.principal);
+    var self = this;
 
     new CameraManager(camera).start(this.session, function(err, message) {
-        if (err) return this.session.log.error(JSON.stringify(err));
+        if (err) return self.session.log.error(JSON.stringify(err));
     });
 };
 
