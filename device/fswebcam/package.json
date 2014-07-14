@@ -4,7 +4,7 @@
   "main": "./app",
   "dependencies": {
     "nitrogen-camera": "~0.1.19",
-    "fswebcam": "*"
+    "fswebcam": "~0.1.21"
   },
   "devDependencies": {}
 }
