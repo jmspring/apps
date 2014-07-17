@@ -94,6 +94,12 @@ service.connect(app, function(err, session, app) {
     webapp.set('view engine', 'handlebars');
 
     webapp.use(express.static(path.join(__dirname, '/static')));
+
+    // on failure we just drop everything and restart via forever.
+    // TODO: this is a pretty heavy hammer: session failures should be restarted transparently.
+    session.onFailure(function() {
+        process.exit(0);
+    });
 });
 
 io.sockets.on('connection', function(socket) {

@@ -1,6 +1,6 @@
 <div id="mosaic"></div>
 
-<a href="{{app_authorization_uri}}" style="margin-top: 25px" class='btn green'>Add Camera</a>
+<a href="{{app_authorization_uri}}" style="margin-top: 25px" class='btn green' style="clear:both;display:block">Add Camera</a>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/moment.js"></script>
@@ -13,14 +13,15 @@
         var divExists = $("#" + cameraId).length > 0;
         if (!divExists) {
             $('#mosaic').append(
-                $("<div id='" + cameraId + "'></div>")
+                $("<div id='" + cameraId + "' style='float:left'></div>")
             );
         }
     }
 
     function updateImage(cameraObj) {
         var date = new Date(Date.parse(cameraObj.image.ts));
-        $("#" + cameraObj.image.from).html("<img width=300 src='" + cameraObj.image.body.url + "'><div><h5>" + cameraObj.camera.name + ": " + moment(cameraObj.image.ts).format("LLL") + "</h5></div>");
+        var name = cameraObj.camera.name || "(unnamed)"
+        $("#" + cameraObj.image.from).html("<img width=300 src='" + cameraObj.image.body.url + "'><div><h5>" + name + ": " + moment(cameraObj.image.ts).format("LLL") + "</h5></div>");
     }
 
     socket.on('image', function(image) {
