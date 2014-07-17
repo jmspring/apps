@@ -5,10 +5,10 @@
     "type": "git",
     "url": "https://github.com/nitrogenjs/apps"
   },
-  "version": "0.1.10",
+  "version": "0.2.0",
   "main": "./app",
   "dependencies": {
-    "nitrogen": "~0.1.328",
+    "nitrogen": "~0.2.0",
     "nitrogen-airpi": "~0.1.6",
     "nitrogen-sensor": "~0.1.4"
   }
