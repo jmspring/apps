@@ -1,0 +1,10 @@
+{
+  "name": "rpi-camera",
+  "version": "0.2.0",
+  "main": "./app",
+  "dependencies": {
+    "nitrogen-camera": "~0.2",
+    "raspberrypi-camera": "*"
+  },
+  "devDependencies": {}
+}

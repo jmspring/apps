@@ -1,0 +1,118 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'publish' ]
+2 info using npm@1.3.22
+3 info using node@v0.10.24
+4 verbose publish [ '.' ]
+5 verbose cache add [ '.', null ]
+6 verbose cache add name=undefined spec="." args=[".",null]
+7 verbose parsed url { protocol: null,
+7 verbose parsed url   slashes: null,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: null,
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: null,
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: '.',
+7 verbose parsed url   path: '.',
+7 verbose parsed url   href: '.' }
+8 silly lockFile 3a52ce78- .
+9 verbose lock . /Users/timpark/.npm/3a52ce78-.lock
+10 verbose tar pack [ '/var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/tmp.tgz',
+10 verbose tar pack   '.' ]
+11 verbose tarball /var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/tmp.tgz
+12 verbose folder .
+13 info prepublish rpi-camera@0.2.0
+14 silly lockFile 1f1177db-tar tar://.
+15 verbose lock tar://. /Users/timpark/.npm/1f1177db-tar.lock
+16 silly lockFile ca6e0883-7218-0-10501447902061045-tmp-tgz tar:///var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/tmp.tgz
+17 verbose lock tar:///var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/tmp.tgz /Users/timpark/.npm/ca6e0883-7218-0-10501447902061045-tmp-tgz.lock
+18 silly lockFile 1f1177db-tar tar://.
+19 silly lockFile 1f1177db-tar tar://.
+20 silly lockFile ca6e0883-7218-0-10501447902061045-tmp-tgz tar:///var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/tmp.tgz
+21 silly lockFile ca6e0883-7218-0-10501447902061045-tmp-tgz tar:///var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/tmp.tgz
+22 verbose tar unpack /var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/tmp.tgz
+23 silly lockFile ddbd8acd-7218-0-10501447902061045-package tar:///var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/package
+24 verbose lock tar:///var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/package /Users/timpark/.npm/ddbd8acd-7218-0-10501447902061045-package.lock
+25 silly lockFile ca6e0883-7218-0-10501447902061045-tmp-tgz tar:///var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/tmp.tgz
+26 verbose lock tar:///var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/tmp.tgz /Users/timpark/.npm/ca6e0883-7218-0-10501447902061045-tmp-tgz.lock
+27 silly gunzTarPerm modes [ '755', '644' ]
+28 silly gunzTarPerm extractEntry package.json
+29 silly gunzTarPerm extractEntry app/index.js
+30 silly lockFile ddbd8acd-7218-0-10501447902061045-package tar:///var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/package
+31 silly lockFile ddbd8acd-7218-0-10501447902061045-package tar:///var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/package
+32 silly lockFile ca6e0883-7218-0-10501447902061045-tmp-tgz tar:///var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/tmp.tgz
+33 silly lockFile ca6e0883-7218-0-10501447902061045-tmp-tgz tar:///var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/tmp.tgz
+34 verbose tar pack [ '/Users/timpark/.npm/rpi-camera/0.2.0/package.tgz',
+34 verbose tar pack   '/var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/package' ]
+35 verbose tarball /Users/timpark/.npm/rpi-camera/0.2.0/package.tgz
+36 verbose folder /var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/package
+37 silly lockFile ddbd8acd-7218-0-10501447902061045-package tar:///var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/package
+38 verbose lock tar:///var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/package /Users/timpark/.npm/ddbd8acd-7218-0-10501447902061045-package.lock
+39 silly lockFile d0863ea3-npm-rpi-camera-0-2-0-package-tgz tar:///Users/timpark/.npm/rpi-camera/0.2.0/package.tgz
+40 verbose lock tar:///Users/timpark/.npm/rpi-camera/0.2.0/package.tgz /Users/timpark/.npm/d0863ea3-npm-rpi-camera-0-2-0-package-tgz.lock
+41 silly lockFile ddbd8acd-7218-0-10501447902061045-package tar:///var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/package
+42 silly lockFile ddbd8acd-7218-0-10501447902061045-package tar:///var/folders/g2/hjzw1dn927g9jt9b6l1zqdlw0000gn/T/npm-42480-IrLtFVoh/1405609547218-0.10501447902061045/package
+43 silly lockFile d0863ea3-npm-rpi-camera-0-2-0-package-tgz tar:///Users/timpark/.npm/rpi-camera/0.2.0/package.tgz
+44 silly lockFile d0863ea3-npm-rpi-camera-0-2-0-package-tgz tar:///Users/timpark/.npm/rpi-camera/0.2.0/package.tgz
+45 silly lockFile 3aae0827-ark-npm-rpi-camera-0-2-0-package /Users/timpark/.npm/rpi-camera/0.2.0/package
+46 verbose lock /Users/timpark/.npm/rpi-camera/0.2.0/package /Users/timpark/.npm/3aae0827-ark-npm-rpi-camera-0-2-0-package.lock
+47 silly lockFile 3aae0827-ark-npm-rpi-camera-0-2-0-package /Users/timpark/.npm/rpi-camera/0.2.0/package
+48 silly lockFile 3aae0827-ark-npm-rpi-camera-0-2-0-package /Users/timpark/.npm/rpi-camera/0.2.0/package
+49 verbose tar unpack /Users/timpark/.npm/rpi-camera/0.2.0/package.tgz
+50 silly lockFile ea2fa234-ark-npm-rpi-camera-0-2-0-package tar:///Users/timpark/.npm/rpi-camera/0.2.0/package
+51 verbose lock tar:///Users/timpark/.npm/rpi-camera/0.2.0/package /Users/timpark/.npm/ea2fa234-ark-npm-rpi-camera-0-2-0-package.lock
+52 silly lockFile d0863ea3-npm-rpi-camera-0-2-0-package-tgz tar:///Users/timpark/.npm/rpi-camera/0.2.0/package.tgz
+53 verbose lock tar:///Users/timpark/.npm/rpi-camera/0.2.0/package.tgz /Users/timpark/.npm/d0863ea3-npm-rpi-camera-0-2-0-package-tgz.lock
+54 silly gunzTarPerm modes [ '755', '644' ]
+55 silly gunzTarPerm extractEntry package.json
+56 silly gunzTarPerm extractEntry app/index.js
+57 silly lockFile ea2fa234-ark-npm-rpi-camera-0-2-0-package tar:///Users/timpark/.npm/rpi-camera/0.2.0/package
+58 silly lockFile ea2fa234-ark-npm-rpi-camera-0-2-0-package tar:///Users/timpark/.npm/rpi-camera/0.2.0/package
+59 silly lockFile d0863ea3-npm-rpi-camera-0-2-0-package-tgz tar:///Users/timpark/.npm/rpi-camera/0.2.0/package.tgz
+60 silly lockFile d0863ea3-npm-rpi-camera-0-2-0-package-tgz tar:///Users/timpark/.npm/rpi-camera/0.2.0/package.tgz
+61 verbose chmod /Users/timpark/.npm/rpi-camera/0.2.0/package.tgz 644
+62 verbose chown /Users/timpark/.npm/rpi-camera/0.2.0/package.tgz [ 501, 20 ]
+63 silly lockFile 3a52ce78- .
+64 silly lockFile 3a52ce78- .
+65 silly publish { name: 'rpi-camera',
+65 silly publish   version: '0.2.0',
+65 silly publish   main: './app',
+65 silly publish   dependencies: { 'nitrogen-camera': '~0.2', 'raspberrypi-camera': '*' },
+65 silly publish   devDependencies: {},
+65 silly publish   readme: 'ERROR: No README data found!',
+65 silly publish   _id: 'rpi-camera@0.2.0',
+65 silly publish   dist: { shasum: '7f59ae9014e53fabf6e527d04d25221dec479c1c' },
+65 silly publish   _from: '.' }
+66 verbose url raw rpi-camera
+67 verbose url resolving [ 'https://registry.npmjs.org/', './rpi-camera' ]
+68 verbose url resolved https://registry.npmjs.org/rpi-camera
+69 info trying registry request attempt 1 at 08:05:47
+70 http PUT https://registry.npmjs.org/rpi-camera
+71 http 403 https://registry.npmjs.org/rpi-camera
+72 info trying registry request attempt 1 at 08:05:47
+73 http PUT https://registry.npmjs.org/rpi-camera
+74 http 403 https://registry.npmjs.org/rpi-camera
+75 error publish Failed PUT 403
+76 error Error: forbidden cannot modify pre-existing version: 0.2.0
+76 error old={"name":"rpi-camera","version":"0.2.0","main":"./app","dependencies":{"nitrogen-camera":"~0.2","raspberrypi-camera":"*"},"devDependencies":{},"_id":"rpi-camera@0.2.0","dist":{"shasum":"7f59ae9014e53fabf6e527d04d25221dec479c1c","tarball":"http://registry.npmjs.org/rpi-camera/-/rpi-camera-0.2.0.tgz"},"_from":".","_npmVersion":"1.3.22","_npmUser":{"name":"tpark","email":"timfpark@gmail.com"},"maintainers":[{"name":"tpark","email":"timfpark@gmail.com"}]}
+76 error new={"name":"rpi-camera","version":"0.2.0","main":"./app","dependencies":{"nitrogen-camera":"~0.2","raspberrypi-camera":"*"},"devDependencies":{},"readme":"ERROR: No README data found!","_id":"rpi-camera@0.2.0","dist":{"shasum":"7f59ae9014e53fabf6e527d04d25221dec479c1c","tarball":"http://registry.npmjs.org/rpi-camera/-/rpi-camera-0.2.0.tgz"},"_from":".","_npmVersion":"1.3.22","_npmUser":{"name":"tpark","email":"timfpark@gmail.com"},"maintainers":[{"name":"tpark","email":"timfpark@gmail.com"}]}: rpi-camera
+76 error     at RegClient.<anonymous> (/usr/local/Cellar/node/0.8.16/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:275:14)
+76 error     at Request.self.callback (/usr/local/Cellar/node/0.8.16/lib/node_modules/npm/node_modules/request/request.js:123:22)
+76 error     at Request.EventEmitter.emit (events.js:98:17)
+76 error     at Request.<anonymous> (/usr/local/Cellar/node/0.8.16/lib/node_modules/npm/node_modules/request/request.js:893:14)
+76 error     at Request.EventEmitter.emit (events.js:117:20)
+76 error     at IncomingMessage.<anonymous> (/usr/local/Cellar/node/0.8.16/lib/node_modules/npm/node_modules/request/request.js:844:12)
+76 error     at IncomingMessage.EventEmitter.emit (events.js:117:20)
+76 error     at _stream_readable.js:920:16
+76 error     at process._tickCallback (node.js:415:13)
+77 error If you need help, you may report this *entire* log,
+77 error including the npm and node versions, at:
+77 error     <http://github.com/isaacs/npm/issues>
+78 error System Darwin 13.2.0
+79 error command "node" "/usr/local/bin/npm" "publish"
+80 error cwd /Users/timpark/dev/nitrogen/apps/device/rpiCamera
+81 error node -v v0.10.24
+82 error npm -v 1.3.22
+83 verbose exit [ 1, true ]
