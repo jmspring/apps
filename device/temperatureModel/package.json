@@ -1,0 +1,15 @@
+{
+  "name": "model-temperature",
+  "homepage": "https://github.com/jmspring/apps",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jmspring/apps"
+  },
+  "version": "0.1.0",
+  "main": "./app",
+  "dependencies": {
+    "nitrogen": "~0.2.0",
+    "nitrogen-model-temperature": "~0.1.1",
+    "nitrogen-sensor": "~0.1.4"
+  }
+}
